@@ -1,0 +1,12 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.card {
+    border-radius: 12px;
+}
+
+#estado {
+    font-size: 18px;
+    color: #0d6efd;
+}

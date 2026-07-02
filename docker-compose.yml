@@ -1,0 +1,65 @@
+services:
+
+  # ── Aplicación principal ────────────────────────────────────────────────────
+  agente_rag:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    container_name: agente_rag
+    restart: unless-stopped
+
+    ports:
+      - "8000:8000"
+
+    env_file:
+      - .env
+
+    environment:
+      # Sobreescribir rutas para que apunten a los volúmenes del contenedor
+      CHROMA_PATH: /app/chroma
+      DATA_PATH:   /app/data
+
+    volumes:
+      # ChromaDB persiste fuera del contenedor
+      - chroma_data:/app/chroma
+      # Logs accesibles desde el host
+      - ./logs:/app/logs
+
+    depends_on:
+      - ingest
+
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import httpx; httpx.get('http://localhost:8000/').raise_for_status()"]
+      interval: 30s
+      timeout: 10s
+      start_period: 30s
+      retries: 3
+
+  # ── Ingesta inicial de documentos ───────────────────────────────────────────
+  # Se ejecuta una sola vez para poblar ChromaDB antes de levantar la API.
+  # Si Chroma ya tiene datos, la ingesta detecta la colección existente.
+  ingest:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    container_name: agente_rag_ingest
+    restart: "no"
+
+    env_file:
+      - .env
+
+    environment:
+      CHROMA_PATH: /app/chroma
+      DATA_PATH:   /app/data
+
+    volumes:
+      - chroma_data:/app/chroma
+
+    command: ["python", "-m", "app.rag.ingest"]
+
+volumes:
+  chroma_data:
+    driver: local

@@ -1,0 +1,29 @@
+DATOS DEL AFILIADO:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- ID:                  {id_afiliado}
+- Nombre:              {nombre_completo}
+- Plan:                {plan}
+- Tipo de afiliado:    {tipo_afiliado}
+- Estado de afiliación:{estado_afiliacion}
+- Estado de pagos:     {estado_pagos}
+- Días en mora:        {dias_mora}
+- Antigüedad:          {antiguedad_meses} meses
+- Preexistencia:       {preexistencia_declarada}{descripcion_preexistencia}
+- Autorización previa: {tiene_autorizacion_previa}{info_autorizacion}
+
+ALERTAS DE ELEGIBILIDAD (condiciones que DEBES considerar):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{eligibility_notes}
+
+CONSULTA DEL USUARIO:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{query}
+
+DOCUMENTOS DE REFERENCIA (ordenados por relevancia, #1 = más relevante):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{context_text}
+
+INSTRUCCIÓN FINAL:
+- Si hay alertas de elegibilidad activas, tu respuesta DEBE reflejarlas en el estado y condiciones.
+- Si no hay documentos relevantes pero el afiliado cumple condiciones básicas, indica "Cubierto" solo si el plan lo contempla de manera general.
+- Responde exclusivamente con el JSON requerido.
